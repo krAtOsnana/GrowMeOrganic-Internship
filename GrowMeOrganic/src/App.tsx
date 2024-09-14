@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { DataTable, DataTablePageParams } from 'primereact/datatable';
+import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import axios from 'axios';
 import { Button } from 'primereact/button';
@@ -71,7 +71,7 @@ const App: React.FC = () => {
         fetchArtData(1, rows)
     }, [rows])
 
-    const onPageChange = (event: DataTablePageParams) => {
+    const onPageChange = (event: any) => {
         setFirst(event.first);
         setRows(event.rows);
 
@@ -99,7 +99,7 @@ const App: React.FC = () => {
            <>
               <div>
               <Button type="button" icon="pi pi-image" label="Select Records" onClick={(e) => op.current?.toggle(e)} />
-               <OverlayPanel ref={op}>
+               <OverlayPanel ref={op} style={{ background: 'white' }}>
                   <div>
                    <h5>Enter number of records to select</h5>
                     <input
@@ -129,7 +129,7 @@ const App: React.FC = () => {
                 dataKey="id"
                 selectionMode={rowClick ? null : 'checkbox'}
                 selection={selectedArtItems}
-                onSelectionChange={(e) => setSelectedArtItems(e.value)} 
+                onSelectionChange={(e:any) => setSelectedArtItems(e.value)} 
                 rowsPerPageOptions={[12, 24, 48]} // Allow users to select rows per page
                 paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
                 currentPageReportTemplate="{first} to {last} of {totalRecords}"
