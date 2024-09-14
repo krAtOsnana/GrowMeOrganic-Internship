@@ -3,10 +3,9 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { OverlayPanel } from 'primereact/overlaypanel';
-import { InputSwitch } from 'primereact/inputswitch'; // Import InputSwitch component
+import { InputSwitch } from 'primereact/inputswitch'; 
 import axios from 'axios';
 
-// Defining the structure of the data returned by the API
 interface ArtItem {
     id: number;
     title: string;
@@ -33,17 +32,17 @@ interface ApiResponse {
 const App: React.FC = () => {
     const [artItems, setArtItems] = useState<ArtItem[]>([]);
     const [first, setFirst] = useState<number>(0);
-    const [rows, setRows] = useState<number>(12); // Default number of rows per page
+    const [rows, setRows] = useState<number>(12); 
     const [totalRecords, setTotalRecords] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
-    const [rowClick, setRowClick] = useState<boolean>(false); // Toggle for rowClick vs checkbox
-    const [selectedArtItems, setSelectedArtItems] = useState<ArtItem[]>([]); // Selection state for checkbox
-    const [numberOfRecords, setNumberOfRecords] = useState<number>(0); // Number of records to select
+    const [rowClick, setRowClick] = useState<boolean>(false); 
+    const [selectedArtItems, setSelectedArtItems] = useState<ArtItem[]>([]);
+    const [numberOfRecords, setNumberOfRecords] = useState<number>(0); 
     const op = useRef<OverlayPanel>(null);
 
-    // Fetch data from the API (with pagination)
+    // Fetch data from the API 
     const fetchArtData = async (page: number, rowsPerPage: number) => {
-        setLoading(true); // Show loading indicator while fetching data
+        setLoading(true)
 
         try {
             const response = await axios.get<ApiResponse>(
@@ -56,16 +55,15 @@ const App: React.FC = () => {
         } catch (error) {
             console.error('Error fetching data from API:', error);
         } finally {
-            setLoading(false); // Stop the loading indicator
+            setLoading(false); 
         }
     };
 
-    // Fetch the first page on component mount and when rows per page changes
     useEffect(() => {
         fetchArtData(1, rows);
     }, [rows]);
 
-    // Handle pagination change
+    // Handleing pagination effect on change
     const onPageChange = (event: any) => {
         setFirst(event.first);
         setRows(event.rows);
@@ -74,7 +72,7 @@ const App: React.FC = () => {
         fetchArtData(pageNumber, event.rows);
     };
 
-    // Handle selecting records using the number input
+   
     const handleSelectRecords = () => {
         if (numberOfRecords > 0 && numberOfRecords <= artItems.length) {
             setSelectedArtItems(artItems.slice(0, numberOfRecords));
@@ -87,13 +85,13 @@ const App: React.FC = () => {
     return (
         <>
             <div>
-                {/* Toggle between row click mode and checkbox selection mode */}
+               
                 <div style={{ marginBottom: '20px' }}>
                     <h5>Toggle between row click and checkbox selection</h5>
                     <InputSwitch checked={rowClick} onChange={(e) => setRowClick(e.value)} />
                 </div>
 
-                {/* Button and overlay panel to select records */}
+                
                 <Button type="button" icon="pi pi-image" label="Select Records" onClick={(e) => op.current?.toggle(e)} />
                 <OverlayPanel ref={op} style={{ background: 'white' }}>
                     <div>
@@ -111,7 +109,7 @@ const App: React.FC = () => {
                 </OverlayPanel>
             </div>
 
-            {/* DataTable displaying the records */}
+           
             <DataTable
                 value={artItems}
                 paginator
@@ -122,7 +120,7 @@ const App: React.FC = () => {
                 onPage={onPageChange}
                 loading={loading}
                 dataKey="id"
-                selectionMode={rowClick ? null : 'checkbox'} // Set selection mode based on rowClick
+                selectionMode={rowClick ? null : 'checkbox'} 
                 selection={selectedArtItems}
                 onSelectionChange={(e: any) => setSelectedArtItems(e.value)}
                 rowsPerPageOptions={[12, 24, 48]}
